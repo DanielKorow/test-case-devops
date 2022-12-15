@@ -1,0 +1,32 @@
+version: "3"
+services:
+  app:
+    build: app/
+    networks:
+      - test-case_default
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+      - ./conf/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
+    networks:
+      test-case_default:
+        ipv4_address: 172.19.0.10
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - test-case_default
+
+networks:
+  test-case_default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.19.0.0/24
