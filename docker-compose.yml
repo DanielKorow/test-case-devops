@@ -1,11 +1,12 @@
-version: "3"
+version: "3.3"
 services:
   app:
     build: app/
     networks:
       - test-case_default
+    container_name: app
   db:
-    image: postgres
+    image: postgres:15.1
     restart: always
     environment:
       POSTGRES_PASSWORD: root
@@ -17,12 +18,23 @@ services:
       test-case_default:
         ipv4_address: 172.19.0.10
   adminer:
-    image: adminer
+    image: adminer:4.8.1
     restart: always
     ports:
       - 8080:8080
     networks:
       - test-case_default
+  fluentbit:
+    image: cr.fluentbit.io/fluent/fluent-bit:1.9.10
+    networks:
+      - test-case_default
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers
+      - ./conf/fb-config:/fluent-bit/etc/fluent-bit.conf
+      - ./scripts/read_container_id_and_name.lua:/fluent-bit/etc/read_container_id_and_name.lua
+    depends_on:
+      - db
+    restart: on-failure
 
 networks:
   test-case_default:
