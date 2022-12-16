@@ -19,6 +19,7 @@
 Доступ к pgsql:
 http://127.0.0.1:8080 (8080 - должен быть свободен, в противном случае надо поменять мапинг в docker-compose.yml)
 ```
+system: PostgreSQL
 server: 172.19.0.10
 username: fluentbit
 password: fluentbit
