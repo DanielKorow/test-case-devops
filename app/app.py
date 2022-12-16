@@ -35,7 +35,7 @@ class TestCase:
 
     def slack_notification(self):
         '''
-        Что бы включить уведосления, нужен токен слака
+        Что бы включить уведомления, нужен токен слака
         в Dockerfile раскомментировать RUN pip install slack-notifications
         
         import os
